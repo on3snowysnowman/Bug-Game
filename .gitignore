@@ -1,0 +1,16 @@
+
+# Directories
+
+/.vscode
+/build
+/AutoFileGen
+
+# Executables
+
+Astrobaut
+*.exe
+
+# Text files
+
+FrostPaths.txt
+OutputLog.txt
