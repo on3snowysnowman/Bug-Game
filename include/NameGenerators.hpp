@@ -14,6 +14,8 @@
 #include <string>
 #include <array>
 
+#include <Fr_WeightedDistribution.hpp>
+
 /** Static class used for generating random names for various different entities. */
 class NameGenerators
 {
@@ -26,8 +28,7 @@ public:
 
 private:
 
-    static const std::array<std::string, 24> CONSONANTS;
-
-    static const std::array<std::string, 11> VOWELS;
+    static WeightedDistribution<std::string, 24> consonants_weighted_distribution;
+    static WeightedDistribution<std::string, 11> vowels_weighted_distribution;
 };
 
