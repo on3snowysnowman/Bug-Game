@@ -2,7 +2,11 @@
 This file tracks specific details on what was changed each git push.
 
 
+2:  
+   
+   - Began work sifting through consonant clusters and sorting out the valid ones.
+
 1:
 
-    - Configured planet generation to use the *new* :) WeightedDistribution classes from Frost.
+   - Configured planet generation to use the *new* :) WeightedDistribution classes from Frost.
 
