@@ -2,6 +2,15 @@
 This file tracks specific details on what was changed each git push.
 
 
+3:
+
+   - Added a two consonant cluster starters txt file for tracking two consonant clusters that can 
+     start a word.
+   - Add PlanetSystemGenerator and Planet classes for generating bare bones procedural planetary 
+     systems.
+   - Added a GameDifficulty file that contains a single enum for storing the game's possible 
+     difficulties.  
+
 2:  
    
    - Began work sifting through consonant clusters and sorting out the valid ones.

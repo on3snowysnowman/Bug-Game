@@ -31,6 +31,8 @@ public:
 
     static std::string generate_planet_name();
 
+    static std::unordered_map<int, int> results;
+    static int trials;
 
 private:
 
@@ -38,20 +40,19 @@ private:
 
     static const std::string s_TWO_CONSONANT_CLUSTER_NO_END_VOWEL_REQUIRED_PATH;
     static const std::string s_TWO_CONSONANT_CLUSTER_END_VOWEL_REQUIRED_PATH;
+    static const std::string s_TWO_CONSONANT_CLUSTER_STARTERS_PATH;
 
     static const std::array<char, 5> s_VOWELS;
     static const std::array<char, 21> s_CONSONANTS;
 
     // An array of consonant clusters of size 2, that do not require a vowel to be placed after.
-    static std::array<std::array<char, 2>, 171> s_two_consonant_cluster_no_end_vowel_required;
+    static std::array<std::array<char, 2>, 172> s_two_consonant_cluster_no_end_vowel_required;
 
     // An array of consonant clusters of size 2, that require a vowel to be placed after.
-    static std::array<std::array<char, 2>, 269> s_two_consonant_cluster_end_vowel_required;
+    static std::array<std::array<char, 2>, 268> s_two_consonant_cluster_end_vowel_required;
 
-    /** A weighted distribution of 'options' for how many consonants to generate when a queried
-     * for consonant generation. For instance, if option '1' was sampled, 1 consonant would be 
-     * added to the name.*/
-    static const WeightedDistribution<uint8_t, 2> s_NUM_CONSONANT_OPTIONS;
+    // An array of consonant clusters of size 2 that can start a name.
+    static std::array<std::array<char, 2>, 83> s_two_consonant_cluster_starters;
 
 
     // Methods
@@ -59,9 +60,11 @@ private:
     /** Loads the consonant clusters of size 2 into memory. */
     static void _load_two_consonant_clusters();
 
+    static void _handle_first_query_for_consonant(std::string& content, uint8_t& character_budget);
+
     static void _handle_vowel_query(std::string& content, uint8_t& character_budget);
 
-    static void _handle_consonant_query(std::string& name, uint8_t& character_budget);
+    static void _handle_consonant_query(std::string& content, uint8_t& character_budget);
 };
 
 
