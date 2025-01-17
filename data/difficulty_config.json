@@ -1,0 +1,277 @@
+[
+    {
+        "Maximum Planets Per Generation": 4,
+        "Minimum Planets Per Generation": 3,
+        "Name": "Routine Operation",
+        "Planet Generation Weights": [
+            [
+                "Icy Dwarf",
+                0
+            ],
+            [
+                "Rocky Dwarf",
+                4
+            ],
+            [
+                "Metallic Dwarf",
+                2
+            ],
+            [
+                "Arctic World",
+                4
+            ],
+            [
+                "Desert World",
+                2
+            ],
+            [
+                "Terrestrial Planet",
+                6
+            ],
+            [
+                "Rocky Planet",
+                7
+            ],
+            [
+                "Lava World",
+                0
+            ],
+            [
+                "Icy Giant",
+                0
+            ],
+            [
+                "Super Earth",
+                1
+            ],
+            [
+                "Gas Giant",
+                3
+            ],
+            [
+                "Dense Gas Giant",
+                0
+            ]
+        ]
+    },
+    {
+        "Maximum Planets Per Generation": 5,
+        "Minimum Planets Per Generation": 4,
+        "Name": "Low Resistance",
+        "Planet Generation Weights": [
+            [
+                "Icy Dwarf",
+                1
+            ],
+            [
+                "Rocky Dwarf",
+                4
+            ],
+            [
+                "Metallic Dwarf",
+                3
+            ],
+            [
+                "Arctic World",
+                4
+            ],
+            [
+                "Desert World",
+                3
+            ],
+            [
+                "Terrestrial Planet",
+                6
+            ],
+            [
+                "Rocky Planet",
+                7
+            ],
+            [
+                "Lava World",
+                1
+            ],
+            [
+                "Icy Giant",
+                1
+            ],
+            [
+                "Super Earth",
+                1
+            ],
+            [
+                "Gas Giant",
+                3
+            ],
+            [
+                "Dense Gas Giant",
+                0
+            ]
+        ]
+    },
+    {
+        "Maximum Planets Per Generation": 6,
+        "Minimum Planets Per Generation": 5,
+        "Name": "Standard Protocol",
+        "Planet Generation Weights": [
+            [
+                "Icy Dwarf",
+                2
+            ],
+            [
+                "Rocky Dwarf",
+                3
+            ],
+            [
+                "Metallic Dwarf",
+                2
+            ],
+            [
+                "Arctic World",
+                4
+            ],
+            [
+                "Desert World",
+                4
+            ],
+            [
+                "Terrestrial Planet",
+                5
+            ],
+            [
+                "Rocky Planet",
+                5
+            ],
+            [
+                "Lava World",
+                2
+            ],
+            [
+                "Icy Giant",
+                2
+            ],
+            [
+                "Super Earth",
+                2
+            ],
+            [
+                "Gas Giant",
+                3
+            ],
+            [
+                "Dense Gas Giant",
+                2
+            ]
+        ]
+    },
+    {
+        "Maximum Planets Per Generation": 7,
+        "Minimum Planets Per Generation": 6,
+        "Name": "Unyielding Frontlines",
+        "Planet Generation Weights": [
+            [
+                "Icy Dwarf",
+                4
+            ],
+            [
+                "Rocky Dwarf",
+                3
+            ],
+            [
+                "Metallic Dwarf",
+                2
+            ],
+            [
+                "Arctic World",
+                4
+            ],
+            [
+                "Desert World",
+                4
+            ],
+            [
+                "Terrestrial Planet",
+                3
+            ],
+            [
+                "Rocky Planet",
+                4
+            ],
+            [
+                "Lava World",
+                3
+            ],
+            [
+                "Icy Giant",
+                2
+            ],
+            [
+                "Super Earth",
+                3
+            ],
+            [
+                "Gas Giant",
+                3
+            ],
+            [
+                "Dense Gas Giant",
+                2
+            ]
+        ]
+    },
+    {
+        "Maximum Planets Per Generation": 8,
+        "Minimum Planets Per Generation": 6,
+        "Name": "Then, There Were Bugs",
+        "Planet Generation Weights": [
+            [
+                "Icy Dwarf",
+                3
+            ],
+            [
+                "Rocky Dwarf",
+                2
+            ],
+            [
+                "Metallic Dwarf",
+                1
+            ],
+            [
+                "Arctic World",
+                3
+            ],
+            [
+                "Desert World",
+                3
+            ],
+            [
+                "Terrestrial Planet",
+                2
+            ],
+            [
+                "Rocky Planet",
+                2
+            ],
+            [
+                "Lava World",
+                3
+            ],
+            [
+                "Icy Giant",
+                2
+            ],
+            [
+                "Super Earth",
+                2
+            ],
+            [
+                "Gas Giant",
+                3
+            ],
+            [
+                "Dense Gas Giant",
+                2
+            ]
+        ]
+    }
+]

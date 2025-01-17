@@ -15,58 +15,80 @@
 #include "NameGenerators.hpp"
 
 
+// Static Members
+
+WeightedDistribution<PLANET_TYPE, NUM_PLANET_TYPES> PlanetSystemGenerator::s_planet_type_options
+(
+    {ICY_DWARF, ROCKY_DWARF, METALLIC_DWARF, ARCTIC_WORLD, DESERT_WORLD, 
+    TERRESTRIAL_PLANET, ROCKY_PLANET, LAVA_WORLD, ICE_GIANT, SUPER_EARTH, 
+    GAS_GIANT, DENSE_GAS_GIANT}, 
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+);
+
+uint8_t PlanetSystemGenerator::s_minimum_planets_per_generation {};
+uint8_t PlanetSystemGenerator::s_maximum_planets_per_generation {};
+
+
 // Public
 
-std::vector<Planet> PlanetSystemGenerator::generate_planet_system(GameDifficulty game_difficulty)
-{
-    static WeightedDistribution<PLANET_TYPE, 12> planet_type_options
-    (
-        {ICY_DWARF, ROCKY_DWARF, METALLIC_DWARF, ARCTIC_WORLD, DESERT_WORLD, 
-        TERRESTRIAL_PLANET, ROCKY_PLANET, LAVA_WORLD, ICE_GIANT, SUPER_EARTH, 
-        GAS_GIANT, DENSE_GAS_GIANT}, 
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-    );
-
-    uint8_t num_planets;
-
-    std::vector<Planet> planets;
-
-    // Handle the game difficulty, which specifies the types of planets that can be generated along
-    // with the number of planets.
-    switch(game_difficulty)
+void PlanetSystemGenerator::set_planet_generation_weights(
+    const json& planet_generation_weights_json) 
+{ 
+    if(planet_generation_weights_json.size() < NUM_PLANET_TYPES)
     {
-        case ROUTINE_OPERATION: 
+        TextFileHandler::add_to_buffer("[ERR] PlanetSystemGenerator::set_planet_generation_weight"
+        "s(const json& planet_generation_weights_json) -> Attempted to set weights with an "
+        "insufficient size json array.");
+        TextFileHandler::write("CrashLog.txt", Frost::APPEND);
+        exit(0);
+    }       
 
-            planet_type_options.set_values()
-            num_planets = FrostRandom::get_random_int(3, 4);
-            break;
+    std::array<uint32_t, NUM_PLANET_TYPES> planet_generation_weights;
 
-        case LOW_RESISTANCE:
-
-            num_planets = FrostRandom::get_random_int(4, 5);
-            break;
-
-        case STANDARD_PROTOCOL:
-
-            num_planets = FrostRandom::get_random_int(4, 6);
-            break;
-
-        case UNYIELDING_FRONTLINES:
-
-            num_planets = FrostRandom::get_random_int(5, 7);
-            break;
-
-        case THEN_THERE_WERE_BUGS:
-
-            num_planets = FrostRandom::get_random_int(6, 8);
-            break;
+    for(uint8_t i = 0; i < NUM_PLANET_TYPES; ++i)
+    {
+        planet_generation_weights.at(i) = planet_generation_weights_json.at(i).at(1);
     }
+
+    s_planet_type_options.set_weights<std::array<uint32_t, NUM_PLANET_TYPES>>
+        (planet_generation_weights);
+}
+
+void PlanetSystemGenerator::set_minimum_planets_per_generation(uint8_t minimum) 
+{ s_minimum_planets_per_generation = minimum; }
+
+void PlanetSystemGenerator::set_maximum_planets_per_generation(uint8_t maximum) 
+{ s_maximum_planets_per_generation = maximum; }
+
+std::vector<Planet> PlanetSystemGenerator::generate_planet_system()
+{
+    // Generate a random number of planets.
+    uint8_t num_planets = FrostRandom::get_random_num<uint8_t>(s_minimum_planets_per_generation,
+        s_maximum_planets_per_generation);
+
+    // Get the weights of the planets before they are modified by this function.
+    const std::array<uint32_t, NUM_PLANET_TYPES> initial_weights = 
+        s_planet_type_options.get_weights();
+
+    // Planets that are generated.
+    std::vector<Planet> planets;
 
     // Generate the planets of the system.
     for(uint8_t i = 0; i < num_planets; ++i)
     {
+        // Sample a planet type to generate.
+        PLANET_TYPE sample = s_planet_type_options.sample();
+
+        // Get the weight of the planet type that was sampled.
+        const uint32_t& EXISTING_WEIGHT = s_planet_type_options.get_weights().at(sample);
+
+        // Multiply the weight of this planet type by 75%, to make it less likely of showing up 
+        // again.
+        s_planet_type_options.set_weight(sample, EXISTING_WEIGHT * 0.75);
+
         // Sample from the planet type options, configured by the difficulty previously.
-        switch(planet_type_options.sample())
+        // switch(s_planet_type_options.sample())
+        switch(sample)
         {
             case ICY_DWARF:
 
@@ -75,7 +97,7 @@ std::vector<Planet> PlanetSystemGenerator::generate_planet_system(GameDifficulty
             
             case ROCKY_DWARF:
                 
-                planets.push_back(_generate_rocky_dwarf());
+                planets.push_back(_generate_rocky_dwarf());                
                 continue;
             
             case METALLIC_DWARF:
@@ -128,7 +150,10 @@ std::vector<Planet> PlanetSystemGenerator::generate_planet_system(GameDifficulty
                 continue;
         }
     }
-    
+
+    // Reset the weights to their initial values.
+    s_planet_type_options.set_weights(initial_weights);
+
     return planets;
 }
 
@@ -143,11 +168,10 @@ Planet PlanetSystemGenerator::_generate_icy_dwarf()
 
     planet.planet_type = ICY_DWARF;
 
-    planet.size = FrostRandom::get_random_int(3, 7);
-    planet.distance_from_star = FrostRandom::get_random_int(15, 25);
+    planet.size = FrostRandom::get_random_num<uint8_t>(3, 7);
+    planet.distance_from_star = FrostRandom::get_random_num<uint8_t>(15, 25);
 
     planet.name = NameGenerators::generate_planet_name();
-    planet.planet_type_readable = "Icy Dwarf";
 
     return planet;
 }
@@ -158,11 +182,10 @@ Planet PlanetSystemGenerator::_generate_rocky_dwarf()
 
     planet.planet_type = ROCKY_DWARF;
 
-    planet.size = FrostRandom::get_random_int(4, 8);
-    planet.distance_from_star = FrostRandom::get_random_int(9, 15);
+    planet.size = FrostRandom::get_random_num<uint8_t>(4, 8);
+    planet.distance_from_star = FrostRandom::get_random_num<uint8_t>(9, 15);
 
     planet.name = NameGenerators::generate_planet_name();
-    planet.planet_type_readable = "Rocky Dwarf";
 
     return planet;
 }
@@ -173,12 +196,10 @@ Planet PlanetSystemGenerator::_generate_metallic_dwarf()
 
     planet.planet_type = METALLIC_DWARF;
 
-    planet.size = FrostRandom::get_random_int(3, 6);
-    planet.distance_from_star = FrostRandom::get_random_int(5, 8);
+    planet.size = FrostRandom::get_random_num<uint8_t>(3, 6);
+    planet.distance_from_star = FrostRandom::get_random_num<uint8_t>(5, 8);
 
     planet.name = NameGenerators::generate_planet_name();
-    planet.planet_type_readable = "Metallic Dwarf";
-
     return planet;
 }
 
@@ -188,12 +209,10 @@ Planet PlanetSystemGenerator::_generate_arctic_world()
 
     planet.planet_type = ARCTIC_WORLD;
 
-    planet.size = FrostRandom::get_random_int(15, 20);
-    planet.distance_from_star = FrostRandom::get_random_int(15, 25);
+    planet.size = FrostRandom::get_random_num<uint8_t>(15, 20);
+    planet.distance_from_star = FrostRandom::get_random_num<uint8_t>(15, 25);
 
     planet.name = NameGenerators::generate_planet_name();
-    planet.planet_type_readable = "Arctic World";
-
     return planet;
 }
 
@@ -203,11 +222,10 @@ Planet PlanetSystemGenerator::_generate_desert_world()
 
     planet.planet_type = DESERT_WORLD;
 
-    planet.size = FrostRandom::get_random_int(15, 20);
-    planet.distance_from_star = FrostRandom::get_random_int(6, 10);
+    planet.size = FrostRandom::get_random_num<uint8_t>(15, 20);
+    planet.distance_from_star = FrostRandom::get_random_num<uint8_t>(6, 10);
 
     planet.name = NameGenerators::generate_planet_name();
-    planet.planet_type_readable = "Desert World";
 
     return planet;
 }
@@ -218,11 +236,10 @@ Planet PlanetSystemGenerator::_generate_terrestrial_planet()
 
     planet.planet_type = TERRESTRIAL_PLANET;
 
-    planet.size = FrostRandom::get_random_int(12, 16);
-    planet.distance_from_star = FrostRandom::get_random_int(12, 15);
+    planet.size = FrostRandom::get_random_num<uint8_t>(12, 16);
+    planet.distance_from_star = FrostRandom::get_random_num<uint8_t>(12, 15);
 
     planet.name = NameGenerators::generate_planet_name();
-    planet.planet_type_readable = "Terrestrial Planet";
 
     return planet;
 }
@@ -233,11 +250,10 @@ Planet PlanetSystemGenerator::_generate_rocky_planet()
 
     planet.planet_type = ROCKY_PLANET;
 
-    planet.size = FrostRandom::get_random_int(12, 20);
-    planet.distance_from_star = FrostRandom::get_random_int(9, 15);
+    planet.size = FrostRandom::get_random_num<uint8_t>(12, 20);
+    planet.distance_from_star = FrostRandom::get_random_num<uint8_t>(9, 15);
 
     planet.name = NameGenerators::generate_planet_name();
-    planet.planet_type_readable = "Rocky Planet";
 
     return planet;
 }
@@ -248,12 +264,10 @@ Planet PlanetSystemGenerator::_generate_lava_world()
 
     planet.planet_type = LAVA_WORLD;
 
-    planet.size = FrostRandom::get_random_int(12, 16);
-    planet.distance_from_star = FrostRandom::get_random_int(3, 5);
+    planet.size = FrostRandom::get_random_num<uint8_t>(12, 16);
+    planet.distance_from_star = FrostRandom::get_random_num<uint8_t>(3, 5);
 
     planet.name = NameGenerators::generate_planet_name();
-    planet.planet_type_readable = "Lava World";
-
     return planet;
 }
 
@@ -263,12 +277,10 @@ Planet PlanetSystemGenerator::_generate_ice_giant()
 
     planet.planet_type = ICE_GIANT;
 
-    planet.size = FrostRandom::get_random_int(25, 32);
-    planet.distance_from_star = FrostRandom::get_random_int(30, 40);
+    planet.size = FrostRandom::get_random_num<uint8_t>(25, 32);
+    planet.distance_from_star = FrostRandom::get_random_num<uint8_t>(30, 40);
 
     planet.name = NameGenerators::generate_planet_name();
-    planet.planet_type_readable = "Ice Giant";
-
     return planet;
 }
 
@@ -278,12 +290,10 @@ Planet PlanetSystemGenerator::_generate_super_earth()
 
     planet.planet_type = SUPER_EARTH;
 
-    planet.size = FrostRandom::get_random_int(20, 30);
-    planet.distance_from_star = FrostRandom::get_random_int(10, 15);
+    planet.size = FrostRandom::get_random_num<uint8_t>(20, 30);
+    planet.distance_from_star = FrostRandom::get_random_num<uint8_t>(10, 15);
 
     planet.name = NameGenerators::generate_planet_name();
-    planet.planet_type_readable = "Super Earth";
-
     return planet;
 }
 
@@ -293,12 +303,10 @@ Planet PlanetSystemGenerator::_generate_gas_giant()
 
     planet.planet_type = GAS_GIANT;
 
-    planet.size = FrostRandom::get_random_int(25, 32);
-    planet.distance_from_star = FrostRandom::get_random_int(25, 25);
+    planet.size = FrostRandom::get_random_num<uint8_t>(25, 32);
+    planet.distance_from_star = FrostRandom::get_random_num<uint8_t>(25, 25);
 
     planet.name = NameGenerators::generate_planet_name();
-    planet.planet_type_readable = "Gas Giant";
-
     return planet;
 }
 
@@ -308,11 +316,9 @@ Planet PlanetSystemGenerator::_generate_dense_gas_giant()
 
     planet.planet_type = DENSE_GAS_GIANT;
 
-    planet.size = FrostRandom::get_random_int(1, 4);
-    planet.distance_from_star = FrostRandom::get_random_int(8, 20);
+    planet.size = FrostRandom::get_random_num<uint8_t>(1, 4);
+    planet.distance_from_star = FrostRandom::get_random_num<uint8_t>(8, 20);
 
     planet.name = NameGenerators::generate_planet_name();
-    planet.planet_type_readable = "Dense Gas Giant";
-
     return planet;
 }

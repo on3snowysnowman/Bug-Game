@@ -12,11 +12,12 @@
 #pragma once
 
 #include <cstdint>
+#include <array>
 
 
 /** Difficulty of the player's game experience. Changes many aspects of the game, including
- * planet and system generation and bug strength and numbers. */
-enum GameDifficulty : uint8_t
+ * planet and system generation along with bug strength and numbers. */
+enum GAME_DIFFICULTY : uint8_t
 {
     ROUTINE_OPERATION,
     LOW_RESISTANCE,
@@ -24,3 +25,10 @@ enum GameDifficulty : uint8_t
     UNYIELDING_FRONTLINES,
     THEN_THERE_WERE_BUGS
 };
+
+/** Names of each of the game difficulty types. The index of the array corresponds to the same 
+ * difficulty type represented by the enum GAME_DIFFICULTY. */
+constexpr std::array<const char*, 5> GAME_DIFFICULTY_NAMES 
+    {"Routine Operation", "Low Resistance", "Standard Protocol", "Unyielding Frontlines",
+    "Then, There Were Bugs"};
+

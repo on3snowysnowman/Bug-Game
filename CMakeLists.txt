@@ -33,6 +33,7 @@ find_package(nlohmann_json REQUIRED)
 target_include_directories(Astrobaut_lib
 PUBLIC
     ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/include/Menus
     ${FROST_INCLUDE_DIR}
 )
 
@@ -50,6 +51,7 @@ add_executable(Astrobaut main.cpp)
 target_include_directories(Astrobaut
 PUBLIC
     ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/include/Menus
     ${FROST_INCLUDE_DIR}
 )
 

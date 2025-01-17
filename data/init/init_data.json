@@ -5,6 +5,7 @@
         15,
         25
     ],
+    "font_path": "Exo2-Regular.ttf",
     "fullscreen": false,
     "vsync": true,
     "frame_limit": 60,

@@ -2,12 +2,29 @@
 This file tracks specific details on what was changed each git push.
 
 
+4:
+
+   - Added name array for game difficulties.
+
+   - Added name array for planet types.
+
+   - Completed base planet generation.
+
+   - Added main simulator class to inherit Frost engine.
+
+   - Added a Main Menu for testing.
+
+   - 
+
+
 3:
 
    - Added a two consonant cluster starters txt file for tracking two consonant clusters that can 
      start a word.
+   
    - Add PlanetSystemGenerator and Planet classes for generating bare bones procedural planetary 
      systems.
+  
    - Added a GameDifficulty file that contains a single enum for storing the game's possible 
      difficulties.  
 
