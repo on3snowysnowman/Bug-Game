@@ -82,9 +82,9 @@ std::vector<Planet> PlanetSystemGenerator::generate_planet_system()
         // Get the weight of the planet type that was sampled.
         const uint32_t& EXISTING_WEIGHT = s_planet_type_options.get_weights().at(sample);
 
-        // Multiply the weight of this planet type by 75%, to make it less likely of showing up 
+        // Multiply the weight of this planet type by 80%, to make it less likely of showing up 
         // again.
-        s_planet_type_options.set_weight(sample, EXISTING_WEIGHT * 0.75);
+        s_planet_type_options.set_weight(sample, EXISTING_WEIGHT * 0.8);
 
         // Sample from the planet type options, configured by the difficulty previously.
         // switch(s_planet_type_options.sample())

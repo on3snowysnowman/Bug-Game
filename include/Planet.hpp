@@ -17,7 +17,7 @@
 
 
 /** 
- * Types of the generatable planets. Use the 'PLANET_TYPE_NAMES' array to lookup the readable 
+ * Types of the generateble planets. Use the 'PLANET_TYPE_NAMES' array to lookup the readable 
  * version of the type, using the enum value as the index. */
 enum PLANET_TYPE : uint8_t
 {

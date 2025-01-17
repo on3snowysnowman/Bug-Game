@@ -21,9 +21,6 @@
 
 // Static Members
 
-std::unordered_map<int, int> NameGenerators::results;
-int NameGenerators::trials {};
-
 const std::string NameGenerators::s_TWO_CONSONANT_CLUSTER_NO_END_VOWEL_REQUIRED_PATH = 
     "data/name_generation/TwoConsonantClusterNoEndVowelRequired.txt";
 const std::string NameGenerators::s_TWO_CONSONANT_CLUSTER_END_VOWEL_REQUIRED_PATH =
@@ -78,10 +75,6 @@ std::string NameGenerators::generate_planet_name()
     if(++num > 122) num = 96;
 
     std::string planet_name;
-
-    planet_name.push_back(char(num));
-
-    return planet_name;
 
     bool vowel_next = FrostRandom::get_random_num<uint8_t>(0, 1);
 
@@ -281,15 +274,16 @@ void NameGenerators::_handle_consonant_query(std::string& content, uint8_t& char
      * 3: Three cluster, no end vowel required
      * 4: Three cluster, end vowel required
      */
+
     static WeightedDistribution<int, 5> cluster_options({0, 1, 2, 3, 4}, {7, 3, 1, 0, 0});
 
     static uint8_t last_handled_budget {};
 
     if(character_budget < 4 && last_handled_budget != character_budget)
     {
-        if(character_budget < 2) cluster_options.set_values<std::initializer_list<uint8_t>>({1, 0, 0, 0, 0});
-        else if(character_budget < 3) cluster_options.set_values<std::initializer_list<uint8_t>>({7, 3, 0, 0, 0});
-        else cluster_options.set_values<std::initializer_list<uint8_t>>({7, 3, 1, 0, 0});
+        if(character_budget < 2) cluster_options.set_weights<std::initializer_list<uint8_t>>({1, 0, 0, 0, 0});
+        else if(character_budget < 3) cluster_options.set_weights<std::initializer_list<uint8_t>>({7, 3, 0, 0, 0});
+        else cluster_options.set_weights<std::initializer_list<uint8_t>>({7, 3, 1, 0, 0});
 
         last_handled_budget = character_budget;
     }
@@ -300,7 +294,7 @@ void NameGenerators::_handle_consonant_query(std::string& content, uint8_t& char
     {
         // Single consonant.
         case 0:
-            ++results[0];
+
             rand_num = FrostRandom::get_random_num<uint8_t>(0, s_CONSONANTS.size() - 1);
             content.push_back(s_CONSONANTS.at(rand_num));
             --character_budget;
@@ -308,7 +302,6 @@ void NameGenerators::_handle_consonant_query(std::string& content, uint8_t& char
 
         // Two cluster, no end vowel.
         case 1:
-            ++results[1];
 
             rand_num = FrostRandom::get_random_num<uint16_t>(0, s_two_consonant_cluster_no_end_vowel_required.size() - 1);
             content.push_back(s_two_consonant_cluster_no_end_vowel_required.at(rand_num).at(0));
@@ -318,8 +311,7 @@ void NameGenerators::_handle_consonant_query(std::string& content, uint8_t& char
 
         // Two cluster, end vowel required.
         case 2:
-            ++results[2];
-            
+
             rand_num = FrostRandom::get_random_num<uint16_t>(0, s_two_consonant_cluster_end_vowel_required.size() - 1);
             content.push_back(s_two_consonant_cluster_end_vowel_required.at(rand_num).at(0));
             content.push_back(s_two_consonant_cluster_end_vowel_required.at(rand_num).at(1));

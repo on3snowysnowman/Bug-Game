@@ -2,6 +2,12 @@
 This file tracks specific details on what was changed each git push.
 
 
+5: 
+
+   - Fixed NameGenerator not setting weights for consonant generation.
+
+   - Removed non monospaced fonts.
+
 4:
 
    - Added name array for game difficulties.

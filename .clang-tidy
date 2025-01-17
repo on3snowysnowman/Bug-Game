@@ -1,0 +1,4 @@
+Checks: '-*,clang-diagnostic-spell-check'
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*'
+FormatStyle: none

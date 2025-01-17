@@ -10,6 +10,7 @@
  */
 
 #include <sstream>
+#include <iostream>
 
 #include "MainMenu.hpp"
 #include "PlanetSystemGenerator.hpp"
@@ -38,7 +39,6 @@ void MainMenu::start()
 
 void MainMenu::update() 
 {
-
     if(InputHandler::is_key_pressed_and_available(SDLK_RETURN))
     {
         _generate_planets();
@@ -52,6 +52,8 @@ void MainMenu::update()
         m_current_difficulty = static_cast<GAME_DIFFICULTY>(
             m_current_difficulty + (m_current_difficulty != GAME_DIFFICULTY_NAMES.size() - 1));
 
+        EventHandler::invoke_event<void, GAME_DIFFICULTY>("SET_DIFFICULTY", m_current_difficulty);
+
         _generate_planets();
 
         InputHandler::block_key_until_released(SDLK_RIGHT);
@@ -62,6 +64,8 @@ void MainMenu::update()
         // Increase the difficulty if it is not already at the min difficulty.
         m_current_difficulty = static_cast<GAME_DIFFICULTY>(
             m_current_difficulty - (m_current_difficulty != 0));
+
+        EventHandler::invoke_event<void, GAME_DIFFICULTY>("SET_DIFFICULTY", m_current_difficulty);
 
         _generate_planets();
 
@@ -76,6 +80,7 @@ void MainMenu::update()
 
 void MainMenu::_generate_planets() 
 {
+
     std::stringstream output_stream;
 
     output_stream << "\n[";

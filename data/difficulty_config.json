@@ -221,7 +221,7 @@
     },
     {
         "Maximum Planets Per Generation": 8,
-        "Minimum Planets Per Generation": 6,
+        "Minimum Planets Per Generation": 7,
         "Name": "Then, There Were Bugs",
         "Planet Generation Weights": [
             [

@@ -45,9 +45,10 @@ GAME_DIFFICULTY Simulator::get_difficulty() const { return m_current_game_diffic
 
 void Simulator::_init() 
 {
+    m_coh.set_font_path("/home/joel/Documents/Code/Astrobaut/data/fonts/JetBrainsMono-Regular.ttf");
     m_coh.set_font_size(12);
 
-    EventHandler::register_event<void, GAME_DIFFICULTY>("CHANGE_DIFFICULTY", 
+    EventHandler::register_event<void, GAME_DIFFICULTY>("SET_DIFFICULTY", 
         std::function<void(GAME_DIFFICULTY)>([this](GAME_DIFFICULTY difficulty)
         { this->set_difficulty(difficulty); }));
     
@@ -55,7 +56,7 @@ void Simulator::_init()
         std::function<GAME_DIFFICULTY()>([this]()
         { return this->get_difficulty(); }));
 
-    set_difficulty(STANDARD_PROTOCOL);
+    set_difficulty(THEN_THERE_WERE_BUGS);
     NameGenerators::init();
 }
 

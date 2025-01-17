@@ -31,9 +31,6 @@ public:
 
     static std::string generate_planet_name();
 
-    static std::unordered_map<int, int> results;
-    static int trials;
-
 private:
 
     // Members
