@@ -4,6 +4,8 @@ This file tracks specific details on what was changed each git push.
 
 5: 
 
+   - Added another font.
+
    - Fixed NameGenerator not setting weights for consonant generation.
 
    - Removed non monospaced fonts.

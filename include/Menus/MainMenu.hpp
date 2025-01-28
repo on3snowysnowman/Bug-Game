@@ -41,9 +41,15 @@ private:
     // Current game difficulty.
     GAME_DIFFICULTY m_current_difficulty;
 
+    uint8_t m_current_font_index {};
+
+    uint16_t m_focus {};
+
     std::string m_output;
 
     ConsoleOutputHandler* m_coh;
+
+    const std::vector<std::string>* m_font_paths;
 
 
     // Methods

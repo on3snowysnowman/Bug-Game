@@ -316,7 +316,7 @@ Planet PlanetSystemGenerator::_generate_dense_gas_giant()
 
     planet.planet_type = DENSE_GAS_GIANT;
 
-    planet.size = FrostRandom::get_random_num<uint8_t>(1, 4);
+    planet.size = FrostRandom::get_random_num<uint8_t>(18, 24);
     planet.distance_from_star = FrostRandom::get_random_num<uint8_t>(8, 20);
 
     planet.name = NameGenerators::generate_planet_name();

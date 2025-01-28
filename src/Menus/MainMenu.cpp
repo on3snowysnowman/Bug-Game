@@ -25,6 +25,8 @@ MainMenu::MainMenu() : Menu("MAIN") {}
 MainMenu::MainMenu(ConsoleOutputHandler* coh) : Menu("MAIN")
 {
     m_coh = coh;
+    m_font_paths = &m_coh->get_available_font_paths();
+    m_coh->set_font_path(m_font_paths->at(m_current_font_index));
 }
 
 
@@ -72,7 +74,39 @@ void MainMenu::update()
         InputHandler::block_key_until_released(SDLK_LEFT);
     }
 
+    else if(InputHandler::is_key_pressed_and_available(SDLK_DOWN))
+    {
+        ++m_focus;
+        m_coh->set_focus(m_focus);
+        InputHandler::delay_key(SDLK_DOWN);
+    }
+
+    else if(InputHandler::is_key_pressed_and_available(SDLK_UP))
+    {
+        m_focus -= m_focus != 0;
+        m_coh->set_focus(m_focus);
+        InputHandler::delay_key(SDLK_UP);
+    }
+
+    else if(InputHandler::is_key_pressed_and_available(SDLK_LEFTBRACKET)
+        && m_current_font_index > 0)
+    {
+        --m_current_font_index;
+        m_coh->set_font_path(m_font_paths->at(m_current_font_index));
+        InputHandler::block_key_until_released(SDLK_LEFTBRACKET);
+    }
+
+    else if(InputHandler::is_key_pressed_and_available(SDLK_RIGHTBRACKET)
+        && m_current_font_index < m_font_paths->size() - 1)
+    {
+        ++m_current_font_index;
+        m_coh->set_font_path(m_font_paths->at(m_current_font_index));
+        InputHandler::block_key_until_released(SDLK_RIGHTBRACKET);
+    }
+
     m_coh->add_str(m_output);
+    m_coh->move_cursor(40, 0);
+    m_coh->add_str("Font: " + m_font_paths->at(m_current_font_index));
 }
 
 
@@ -80,7 +114,6 @@ void MainMenu::update()
 
 void MainMenu::_generate_planets() 
 {
-
     std::stringstream output_stream;
 
     output_stream << "\n[";

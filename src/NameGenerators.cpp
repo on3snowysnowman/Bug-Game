@@ -67,7 +67,7 @@ std::string NameGenerators::generate_player_name()
 
     return player_name;
 }
-
+#include <iostream>
 std::string NameGenerators::generate_planet_name()
 {
     static uint8_t num {96};
@@ -211,7 +211,7 @@ void NameGenerators::_handle_first_query_for_consonant(std::string& content, uin
      */
     static WeightedDistribution<uint8_t, 3> cluster_options({0, 1, 2}, {7, 3, 1});
 
-    if(character_budget == 3) cluster_options.set_values<std::initializer_list<uint8_t>>({7, 3, 0}); 
+    if(character_budget == 3) cluster_options.set_weights<std::initializer_list<uint8_t>>({7, 3, 0}); 
 
     static uint8_t last_handled_budget {};
     // Since this is the first query of the generation, it is known that the character budget is 
