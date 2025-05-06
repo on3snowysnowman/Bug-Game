@@ -1,7 +1,7 @@
 /**
  * @file Planet.hpp
  * @author Joel Height (On3SnowySnowman@gmail.com)
- * @brief Single class declaration & implementation.
+ * @brief Declarations for Planet types and a Planet struct.
  * @version 0.1
  * @date 01-09-25
  *

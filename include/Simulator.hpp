@@ -15,6 +15,7 @@
 
 #include "GameDifficulty.hpp"
 #include "MainMenu.hpp"
+#include "SectorMapViewMenu.hpp"
 
 class Simulator : public FrostEngine
 {
@@ -51,5 +52,7 @@ private:
     // The name of the current difficulty.
     std::string m_current_game_difficulty_name;
 
-    MainMenu main_menu;
+    MainMenu m_main_menu;
+
+    SectorMapViewMenu m_s_map_view_menu;
 };

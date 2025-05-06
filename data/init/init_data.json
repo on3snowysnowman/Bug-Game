@@ -7,10 +7,10 @@
     ],
     "font_path": "data/fonts/ShareTechMono-Regular.ttf",
     "font_size": 22,
-    "fullscreen": true,
+    "fullscreen": false,
     "vsync": true,
     "frame_limit": 60,
     "screen_height": 700,
-    "screen_width": 1250,
+    "screen_width": 1200,
     "use_extended_colors": true
 }

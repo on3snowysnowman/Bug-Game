@@ -9,6 +9,8 @@
  *
  */
 
+#include  <iostream>
+
 #include <EventHandler.hpp>
 #include <MenuManager.hpp>
 
@@ -24,9 +26,9 @@ Simulator::Simulator() : FrostEngine()
 {
     _init();
 
-    main_menu = MainMenu(&m_coh);
+    m_s_map_view_menu = SectorMapViewMenu(&m_coh, &m_sprite_handler);
 
-    MenuManager::activate_menu(&main_menu);
+    MenuManager::activate_menu(&m_s_map_view_menu);
 }
 
 
@@ -45,6 +47,8 @@ GAME_DIFFICULTY Simulator::get_difficulty() const { return m_current_game_diffic
 
 void Simulator::_init() 
 {
+    // m_sprite_handler.set_sprite_scale_factor(2);
+
     EventHandler::register_event<void, GAME_DIFFICULTY>("SET_DIFFICULTY", 
         std::function<void(GAME_DIFFICULTY)>([this](GAME_DIFFICULTY difficulty)
         { this->set_difficulty(difficulty); }));

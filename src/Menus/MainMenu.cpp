@@ -12,6 +12,9 @@
 #include <sstream>
 #include <iostream>
 
+#include <UISimulationContainers.hpp>
+#include <UIButton.hpp>
+
 #include "MainMenu.hpp"
 #include "PlanetSystemGenerator.hpp"
 #include "EventHandler.hpp"
@@ -105,7 +108,7 @@ void MainMenu::update()
     }
 
     m_coh->add_str(m_output);
-    m_coh->move_cursor(40, 0);
+    m_coh->set_cursor(40, 0);
     m_coh->add_str("Font: " + m_font_paths->at(m_current_font_index));
 }
 

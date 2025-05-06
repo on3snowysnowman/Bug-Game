@@ -1,6 +1,12 @@
 
 This file tracks specific details on what was changed each git push.
 
+6:
+
+   - Changed name to BugGame (Temporary), as Astrobaut is taken.
+
+   - Added Sectors along with a Menu to view the Sector Maps.
+
 
 5: 
 
