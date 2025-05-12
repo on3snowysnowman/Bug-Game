@@ -39,8 +39,10 @@ PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/include/Menus
     ${CMAKE_SOURCE_DIR}/include/Sector
-    ${FROST_INCLUDE_DIR}
-    ${FROST_INCLUDE_DIR}/UITools
+    ${FROST_INCLUDE_DIR}/Frost
+    ${FROST_INCLUDE_DIR}/Frost/UITools
+    # ${FROST_INCLUDE_DIR}/nlohmann
+    # ${FROST_INCLUDE_DIR}/UITools
 )
 
 # Link all depended libraries to the main library.

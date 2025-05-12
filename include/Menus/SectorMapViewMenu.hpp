@@ -60,6 +60,8 @@ private:
 
     std::pair<uint16_t, uint16_t> m_cursor_pos;
 
+    std::string m_viewable_sector_position;
+
     Sprite m_light_gray_sector_sprite;
     Sprite m_dark_gray_sector_sprite;
     Sprite m_ore_sprite;
@@ -81,7 +83,7 @@ private:
     void _init_sector_trait_sprite(uint16_t sector_col, 
         uint16_t sector_row);
 
-    void _update_cursor_sprite();
+    void _update_cursor_information();
 
     void _handle_input();
 

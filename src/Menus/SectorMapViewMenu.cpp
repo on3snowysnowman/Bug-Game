@@ -56,12 +56,19 @@ void SectorMapViewMenu::start()
     m_cursor_ren_ID = m_sprite_handler->render_sprite(m_cursor_sprite, 0, 0, 0, 
         0, 1);
 
-    _update_cursor_sprite();
+    _update_cursor_information();
 }
 
 void SectorMapViewMenu::update() 
 {
     _handle_input();
+
+    m_coh->set_anchor(60);
+
+    m_coh->add_str("Sector: ");
+    m_coh->add_str(m_viewable_sector_position);
+
+    // m_coh->add_new_line(2);
 }
 
 
@@ -176,7 +183,7 @@ void SectorMapViewMenu::_init_sector_trait_sprite(uint16_t sector_col,
     }
 }
 
-void SectorMapViewMenu::_update_cursor_sprite()
+void SectorMapViewMenu::_update_cursor_information()
 {
     uint16_t cursor_display_x_position = 
         s_SECTOR_MAP_START_X + 
@@ -186,6 +193,9 @@ void SectorMapViewMenu::_update_cursor_sprite()
     uint16_t cursor_display_y_position = 
         s_SECTOR_MAP_START_Y + 
         (SECTOR_SPRITE_HEIGHT_OFFSET * m_cursor_pos.second);
+
+    m_viewable_sector_position = std::to_string(m_cursor_pos.first) + ", " +
+        std::to_string(m_cursor_pos.second);
 
     m_sprite_handler->set_instance_position(m_cursor_ren_ID, 
         cursor_display_x_position, cursor_display_y_position);
@@ -204,7 +214,7 @@ void SectorMapViewMenu::_handle_input()
                 m_cursor_pos.second -= 1;;
                 InputHandler::delay_key(SDLK_UP, 215);
 
-                _update_cursor_sprite();
+                _update_cursor_information();
                 break;
             
             case SDLK_RIGHT: 
@@ -214,7 +224,7 @@ void SectorMapViewMenu::_handle_input()
                 m_cursor_pos.first += 1;
                 InputHandler::delay_key(SDLK_RIGHT, 215);
 
-                _update_cursor_sprite();
+                _update_cursor_information();
                 break;
 
             case SDLK_DOWN:
@@ -224,7 +234,7 @@ void SectorMapViewMenu::_handle_input()
                 m_cursor_pos.second += 1;
                 InputHandler::delay_key(SDLK_DOWN, 215);
 
-                _update_cursor_sprite();
+                _update_cursor_information();
                 break;
 
             case SDLK_LEFT:
@@ -234,7 +244,7 @@ void SectorMapViewMenu::_handle_input()
                 m_cursor_pos.first -= 1;
                 InputHandler::delay_key(SDLK_LEFT, 215);
 
-                _update_cursor_sprite();
+                _update_cursor_information();
                 break;
 
             case SDLK_RETURN:   

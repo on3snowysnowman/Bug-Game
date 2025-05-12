@@ -53,7 +53,17 @@ private:
     {
         Sector* s = new Sector;
 
+        if(poll_ore_veins())
+        {
+            s->traits.push_back("Ore Veins");
+        }
+
         return s;
+    }
+
+    bool poll_ore_veins()
+    {
+        return FrostRandom::get_random_num<uint8_t>(0, 1);
     }
 
 };

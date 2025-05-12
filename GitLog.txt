@@ -1,6 +1,15 @@
 
 This file tracks specific details on what was changed each git push.
 
+7:
+
+   - Updated cursor sprite function to cursor information to better reflect 
+     what the function does.
+     
+   - Sector menu now views the hovered sector.
+
+   - Added bare bones random Ore Veins generation.
+
 6:
 
    - Changed name to BugGame (Temporary), as Astrobaut is taken.
