@@ -11,9 +11,10 @@
 
 #pragma once
 
-#include <Array2D.hpp>
-#include <Fr_Random.hpp>
-#include <SpriteHandler.hpp>
+#include <vector>
+
+#include <GridNodeDistributor.hpp>
+
 
 #include "Sector.hpp"
 
@@ -27,43 +28,32 @@ class SectorMapGenerator
 
 public:
 
-    SectorMapGenerator() {}
-    
-    template<uint16_t N>
-    Array2D<Sector*, N> generate_sector_map()
-    {
-        Array2D<Sector*, N> sector_grid;
-
-        // Create Sectors.
-        for(uint16_t i = 0; i < N; ++i)
-        {
-            for(uint16_t j = 0; j < N; ++j)
-            {
-                sector_grid.at(i, j) = create_sector(true);
-            }
-        }
-
-        return sector_grid;
-    }
+    std::vector<Sector*> generate_sector_map(uint16_t sector_size);
 
 private:
 
+    // Members 
+
+    uint16_t m_active_sector_size;
+
+    uint16_t m_chunk_size = 3;
+
+    /**
+     * @brief The sector map that is currently being 'worked on' during 
+     * generation.
+     * 
+     * If there is no generation occuring, this pointer is a nullptr.
+     */
+    std::vector<Sector*>* m_active_sector_map;
+
+    GridNodeDistributor m_node_distr;
+
+
+    // Methods
+
+    void _place_ore_veins();
+
     /** Generates a randomized sector. */
-    Sector* create_sector(bool even_sector)
-    {
-        Sector* s = new Sector;
-
-        if(poll_ore_veins())
-        {
-            s->traits.push_back("Ore Veins");
-        }
-
-        return s;
-    }
-
-    bool poll_ore_veins()
-    {
-        return FrostRandom::get_random_num<uint8_t>(0, 1);
-    }
+    Sector* _create_sector();
 
 };

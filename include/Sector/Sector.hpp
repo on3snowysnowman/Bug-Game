@@ -18,6 +18,11 @@
 
  #include <Sprite.hpp>
 
+
+enum SECTOR_TRAITS : uint8_t
+{
+   ORE_VEINS
+};
  
 constexpr uint16_t SECTOR_SPRITE_WIDTH = 88;
 constexpr uint16_t ODD_SECTOR_SPRITE_WIDTH_OFFSET = 44;
@@ -55,5 +60,5 @@ constexpr uint16_t SECTOR_SPRITE_HEIGHT_OFFSET = 71;
     std::array<uint32_t, 5> resources {0, 0, 0, 0, 0};
 
     // Trait names that are affecting this Sector.
-    std::vector<const char*> traits;
+    std::vector<SECTOR_TRAITS> traits;
  };

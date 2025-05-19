@@ -39,6 +39,7 @@ PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/include/Menus
     ${CMAKE_SOURCE_DIR}/include/Sector
+    ${CMAKE_SOURCE_DIR}/include/SectorStructures
     ${FROST_INCLUDE_DIR}/Frost
     ${FROST_INCLUDE_DIR}/Frost/UITools
     # ${FROST_INCLUDE_DIR}/nlohmann

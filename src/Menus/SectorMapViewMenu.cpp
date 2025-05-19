@@ -11,6 +11,8 @@
 
 #include "SectorMapViewMenu.hpp"
 
+#include <iostream>
+
 #include <InputHandler.hpp>
 
 #include "SectorMapGenerator.hpp"
@@ -44,7 +46,8 @@ SectorMapViewMenu::SectorMapViewMenu(ConsoleOutputHandler* coh,
     m_cursor_sprite = m_sprite_handler->create_sprite("assets/SectorCursor2.png", 
         0, 0, 88, 92);
 
-    m_sector_map = m_map_generator.generate_sector_map<s_SECTOR_MAP_SIZE>();
+    m_sector_map = m_map_generator.generate_sector_map(s_SECTOR_MAP_SIZE);
+    m_rendering_tracker_map.resize(s_SECTOR_MAP_SIZE * s_SECTOR_MAP_SIZE);
 }
 
 // Public
@@ -88,7 +91,8 @@ void SectorMapViewMenu::_init_sector_map_sprites()
                 s_SECTOR_MAP_START_X + (SECTOR_SPRITE_WIDTH * col), 
                 s_SECTOR_MAP_START_Y + (SECTOR_SPRITE_HEIGHT_OFFSET * row));
             
-            m_rendering_tracker_map.at(col, row).push_back(
+            m_rendering_tracker_map.at(
+                (row * s_SECTOR_MAP_SIZE) + col).push_back(
                 RenderingObject {ren_id, "SECTOR"});
 
             _init_sector_trait_sprite(col, row);
@@ -107,7 +111,8 @@ void SectorMapViewMenu::_init_sector_map_sprites()
                 s_SECTOR_MAP_START_X + (SECTOR_SPRITE_WIDTH * col), 
                 s_SECTOR_MAP_START_Y + (SECTOR_SPRITE_HEIGHT_OFFSET * row));
             
-            m_rendering_tracker_map.at(col, row).push_back(
+            m_rendering_tracker_map.at(
+                (row * s_SECTOR_MAP_SIZE) + col).push_back(
                 RenderingObject {ren_id, "SECTOR"});
 
             _init_sector_trait_sprite(col, row);
@@ -127,7 +132,8 @@ void SectorMapViewMenu::_init_sector_map_sprites()
                 (SECTOR_SPRITE_WIDTH * col), 
                 s_SECTOR_MAP_START_Y + (SECTOR_SPRITE_HEIGHT_OFFSET * row));
             
-            m_rendering_tracker_map.at(col, row).push_back(
+            m_rendering_tracker_map.at(
+                (row * s_SECTOR_MAP_SIZE) + col).push_back(
                 RenderingObject {ren_id, "SECTOR"});
 
             _init_sector_trait_sprite(col, row);
@@ -147,7 +153,8 @@ void SectorMapViewMenu::_init_sector_map_sprites()
                 (SECTOR_SPRITE_WIDTH * col), 
                 s_SECTOR_MAP_START_Y + (SECTOR_SPRITE_HEIGHT_OFFSET * row));
             
-            m_rendering_tracker_map.at(col, row).push_back(
+            m_rendering_tracker_map.at(
+                (row * s_SECTOR_MAP_SIZE) + col).push_back(
                 RenderingObject {ren_id, "SECTOR"});
 
             _init_sector_trait_sprite(col, row);
@@ -158,7 +165,11 @@ void SectorMapViewMenu::_init_sector_map_sprites()
 void SectorMapViewMenu::_init_sector_trait_sprite(uint16_t sector_col, 
     uint16_t sector_row)
 {
-    Sector* targ_sector = m_sector_map.at(sector_col, sector_row);
+    Sector* targ_sector = m_sector_map.at(
+        (sector_row * s_SECTOR_MAP_SIZE) + sector_col);
+
+    // No traits, no problem.
+    if(targ_sector->traits.size() == 0) return;
 
     uint16_t trait_display_x = s_SECTOR_MAP_START_X +
         ((sector_row & 1) * ODD_SECTOR_SPRITE_WIDTH_OFFSET) + 
@@ -171,13 +182,14 @@ void SectorMapViewMenu::_init_sector_trait_sprite(uint16_t sector_col,
         
     rendering_id trait_id;
 
-    for(const char* trait : targ_sector->traits)
+    for(SECTOR_TRAITS trait : targ_sector->traits)
     {
-        if(trait == "Ore Veins")
+        if(trait == ORE_VEINS)
         {
             trait_id = m_sprite_handler->render_sprite(m_ore_sprite,
-                trait_display_x, trait_display_y);
-            m_rendering_tracker_map.at(sector_col, sector_row).push_back(
+                trait_display_x, trait_display_y, 0, 0, 1);
+            m_rendering_tracker_map.at(
+                (sector_row * s_SECTOR_MAP_SIZE) + sector_col).push_back(
                 RenderingObject {trait_id, "ORE_VEINS"});
         }
     }
@@ -194,8 +206,8 @@ void SectorMapViewMenu::_update_cursor_information()
         s_SECTOR_MAP_START_Y + 
         (SECTOR_SPRITE_HEIGHT_OFFSET * m_cursor_pos.second);
 
-    m_viewable_sector_position = std::to_string(m_cursor_pos.first) + ", " +
-        std::to_string(m_cursor_pos.second);
+    m_viewable_sector_position = std::to_string(m_cursor_pos.first + 1) + ", " +
+        std::to_string(m_cursor_pos.second + 1);
 
     m_sprite_handler->set_instance_position(m_cursor_ren_ID, 
         cursor_display_x_position, cursor_display_y_position);
@@ -259,25 +271,20 @@ void SectorMapViewMenu::_handle_input()
 void SectorMapViewMenu::_generate_sector_map()
 {
     _clear_rendering_objects();
-    m_sector_map = m_map_generator.generate_sector_map<s_SECTOR_MAP_SIZE>();
+    m_sector_map = m_map_generator.generate_sector_map(s_SECTOR_MAP_SIZE);
     _init_sector_map_sprites();
 }
 
 void SectorMapViewMenu::_clear_rendering_objects()
 {
-    // Iterate through each RenderingObject to unrender the instance.
-    for(std::array<std::vector<RenderingObject>, s_SECTOR_MAP_SIZE>& row : 
-        m_rendering_tracker_map)
+    for(uint32_t i = 0; i < s_SECTOR_MAP_SIZE * s_SECTOR_MAP_SIZE; ++i)
     {
-        for(std::vector<RenderingObject>& col : row)
+        // Iterate through each RenderingObject at this position.
+        for(const RenderingObject& obj : m_rendering_tracker_map.at(i))
         {
-            int bound = col.size();
-
-            for(int i = 0; i < bound; ++i)
-            {
-                m_sprite_handler->unrender_sprite(col.at(0).ren_ID);
-                col.erase(col.begin());
-            }
+            m_sprite_handler->unrender_sprite(obj.ren_ID);
         }
+
+        m_rendering_tracker_map.at(i).clear();
     }
 }

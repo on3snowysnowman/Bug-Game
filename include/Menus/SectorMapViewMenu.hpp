@@ -13,6 +13,7 @@
 
 #include <cstdint>
 #include <unordered_map>
+#include <vector>
 
 #include <Menu.hpp>
 #include <Sprite.hpp>
@@ -47,7 +48,7 @@ private:
 
     // Members
 
-    static constexpr uint16_t s_SECTOR_MAP_SIZE = 5;
+    static constexpr uint16_t s_SECTOR_MAP_SIZE = 6;
 
     static constexpr uint16_t s_SECTOR_MAP_START_X = 10;
 
@@ -67,11 +68,10 @@ private:
     Sprite m_ore_sprite;
     Sprite m_cursor_sprite;
 
-    Array2D<Sector*, s_SECTOR_MAP_SIZE> m_sector_map;
+    std::vector<Sector*> m_sector_map;
 
     // Map of sprites that are being rendered on each sector tile.
-    Array2D<std::vector<RenderingObject>, s_SECTOR_MAP_SIZE> 
-        m_rendering_tracker_map;
+    std::vector<std::vector<RenderingObject>> m_rendering_tracker_map;
 
     SectorMapGenerator m_map_generator;
 

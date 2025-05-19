@@ -1,6 +1,17 @@
 
 This file tracks specific details on what was changed each git push.
 
+8:
+
+   - Reconfigured Sector Generation to output a single vector representing the 
+     entire map.
+
+   - Added grid distribution generation to the sector map generation. 
+
+   - Added basic SectorStructure component and began development of the 
+     OreMine.
+
+
 7:
 
    - Updated cursor sprite function to cursor information to better reflect 
