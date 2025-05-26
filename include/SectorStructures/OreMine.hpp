@@ -11,10 +11,11 @@
 
 #pragma once
 
+#include "Sector.hpp"
 #include "SectorStructure.hpp"
 
 
-class OreMine : public SectorStructure
+class OreMine
 {
 
 public:
@@ -23,10 +24,13 @@ public:
 
     OreMine(Sector* sector);
 
-    void tick() final;
+    static void tick_thunk(void* obj);
+
+    void tick();
 
 private:
 
     uint16_t m_ore_gen_per_tick = 2;
 
+    Sector* m_sector;
 };

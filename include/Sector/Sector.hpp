@@ -30,14 +30,16 @@ constexpr uint16_t SECTOR_SPRITE_HEIGHT = 92;
 constexpr uint16_t SECTOR_SPRITE_HEIGHT_OFFSET = 71;
 
 /**
- * @struct Sector
- * @brief Represents a map sector with resources, power, defense, and traits.
- * 
- * Encapsulates the state of a map sector, including its resources, power 
- * levels, defense capabilities, and special traits.
+ * @brief Represents a map Sector with resources, power, defense, and traits.
  */
  struct Sector
  {    
+   static constexpr uint32_t ORE_STORAGE_LIMIT = 2000;
+   static constexpr uint32_t OIL_STORAGE_LIMIT = 5000;
+   static constexpr uint32_t CRYSTAL_STORAGE_LIMIT = 400;
+   static constexpr uint32_t METAL_STORAGE_LIMIT = 1000;
+   static constexpr uint32_t ALLOY_STORAGE_LIMIT = 500;
+
     // Represents the defensive capability of this Sector. This value is used to 
     // determine the sector's resistance to attacks.
     uint8_t defense_level {};
@@ -57,7 +59,7 @@ constexpr uint16_t SECTOR_SPRITE_HEIGHT_OFFSET = 71;
     *   3 - Metal
     *   4 - Alloy
     */
-    std::array<uint32_t, 5> resources {0, 0, 0, 0, 0};
+   std::array<uint32_t, 5> resources {0, 0, 0, 0, 0};
 
     // Trait names that are affecting this Sector.
     std::vector<SECTOR_TRAITS> traits;

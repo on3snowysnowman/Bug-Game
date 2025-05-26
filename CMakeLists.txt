@@ -56,9 +56,15 @@ PUBLIC
 )
 
 add_executable(Bug_Game main.cpp)
+add_executable(test test.cpp)
 
 # Link executable to the library, which includes the depended libraries in it.
 target_link_libraries(Bug_Game
+    Bug_Game_lib
+
+)
+
+target_link_libraries(test
     Bug_Game_lib
 
 )
